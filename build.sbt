@@ -1,6 +1,8 @@
-name := "skeleton"
+name := "bitemporal"
 
-organization := "com.github.fractal"
+parallelExecution in Test := false
+
+organization := "none"
 
 version := "1.0"
 
@@ -8,8 +10,11 @@ scalaVersion := "2.11.0"
 
 //Define dependencies. These ones are only required for Test and Integration Test scopes.
 libraryDependencies ++= Seq(
-    "org.scalatest"   %% "scalatest"    % "2.1.6"   % "test,it",
-    "org.scalacheck"  %% "scalacheck"   % "1.11.4"      % "test,it"
+    "org.scalatest"   %% "scalatest"  % "2.1.6"   % "test,it",
+    "org.scalacheck"  %% "scalacheck"   % "1.11.4" % "test,it",
+    "joda-time" % "joda-time" % "2.0",
+    "org.joda" % "joda-convert" % "1.2",
+    "com.google.code.gson" % "gson" % "1.7.1"
 )
 
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html
@@ -27,5 +32,3 @@ org.scalastyle.sbt.ScalastylePlugin.Settings
  
 org.scalastyle.sbt.PluginKeys.config <<= baseDirectory { _ / "src/main/config" / "scalastyle-config.xml" }
 
-// Generate Eclipse project with sources for dependencies
-EclipseKeys.withSource := true
