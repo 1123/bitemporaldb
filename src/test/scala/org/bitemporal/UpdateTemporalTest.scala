@@ -38,6 +38,8 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     val context1 =  new BitemporalContext(new Date(), TestData.d1)
     val retrieved1: Temporal[Student] = MemoryDb.findLogical(template, sId, context1).get
 
+    Thread.sleep(10)
+    
     MemoryDb.updateLogical(sId, new Student("John", "Doe"), sPeriod)
 
     // since we are searching with the old context (the transaction time before we did the update),
