@@ -26,7 +26,7 @@ class BasicStorageTest extends FlatSpec with Matchers {
       MemoryDb.collectionFor(s).get.get(id1).head.element should be(s)
       MemoryDb.collectionFor(s).get.get(id2).head.element should be(t)
     }
-
+    
 }
 
 
