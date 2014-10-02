@@ -25,7 +25,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
   
   it should "allow updates for existing objects and retrieval with a bitemporal context" in {
     
-    MemoryDb.clearDatabase()
+    InMemoryBitemporalDatabase.clearDatabase()
 
     val s  = new Student("Allen", "Doe")
     val t  = new Student("Allen", "Dot")
@@ -33,23 +33,23 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     val sPeriod = new Period(TestData.d1, TestData.d2)
     val tPeriod = new Period(TestData.d3, TestData.d4)
 
-    val sId = MemoryDb.store(s, sPeriod)
+    val sId = InMemoryBitemporalDatabase.store(s, sPeriod)
 
     // save the other temporal version
-    MemoryDb.updateLogical(sId, t, tPeriod)
+    InMemoryBitemporalDatabase.updateLogical(sId, t, tPeriod)
     val context1 =  new BitemporalContext(new Date(), TestData.d1)
-    val retrieved1: Temporal[Student] = MemoryDb.findLogical(new Student(), sId, context1).get
+    val retrieved1: Temporal[Student] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
     Thread.sleep(10)
     
-    MemoryDb.updateLogical(sId, new Student("John", "Doe"), sPeriod)
+    InMemoryBitemporalDatabase.updateLogical(sId, new Student("John", "Doe"), sPeriod)
 
     // since we are searching with the old context (the transaction time before we did the update),
     // we are expecting the old version of the Student.
-    val retrieved2 = MemoryDb.findLogical(new Student(), sId, context1).get
+    val retrieved2 = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
     retrieved2.element should equal (retrieved1.element)
 
     // search with the new transaction time. Thus we expect to find the correct/updated name.
-    val retrieved3 : Temporal[Student] = MemoryDb.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
+    val retrieved3 : Temporal[Student] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
     retrieved3.element.firstName should be ("John")
   }
 }

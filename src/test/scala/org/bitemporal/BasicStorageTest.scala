@@ -12,19 +12,26 @@ class BasicStorageTest extends FlatSpec with Matchers {
 
     behavior of "a MemoryDb"
 
-    it should "be able to store and retrieve objects with logical ids" in {
-      MemoryDb.clearDatabase()
-      val s: Student = new Student("Some", "Body")
+    InMemoryBitemporalDatabase.clearDatabase()
+
+    var id1 : Int = 0;
+    var id2 : Int = 0;
+    var s = new Student("Some", "Body")
+    var t = new Student("Some", "Where")
+    
+    it should "be able to store objects with a validity period" in {
       val v1: Period = new Period(TestData.d1, TestData.d2)
-      val t: Student = new Student("Some", "Where")
       val v2: Period = new Period(TestData.d3, TestData.d4)
-      val id1 = MemoryDb.store(s, v1)
-      val id2 = MemoryDb.store(t, v2)
-      MemoryDb.tableCount() should be(1)
-      MemoryDb.collectionFor(s).get.countLogical should be(2)
-      MemoryDb.countInstances(id1, new Student()) should be(1)
-      MemoryDb.collectionFor(s).get.get(id1).head.element should be(s)
-      MemoryDb.collectionFor(s).get.get(id2).head.element should be(t)
+      id1 = InMemoryBitemporalDatabase.store(s, v1)
+      id2 = InMemoryBitemporalDatabase.store(t, v2)
+    }
+    
+    it should "be able to retrieve all objects belonging to a logical id" in {
+      InMemoryBitemporalDatabase.tableCount() should be(1)
+      InMemoryBitemporalDatabase.collectionFor(s).get.countLogical should be(2)
+      InMemoryBitemporalDatabase.countInstances(id1, new Student()) should be(1)
+      InMemoryBitemporalDatabase.collectionFor(s).get.get(id1).head.element should be(s)
+      InMemoryBitemporalDatabase.collectionFor(s).get.get(id2).head.element should be(t)
     }
     
 }

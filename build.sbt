@@ -6,7 +6,9 @@ organization := "none"
 
 version := "1.0"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.11.2"
+
+EclipseKeys.withSource := true
 
 //Define dependencies. These ones are only required for Test and Integration Test scopes.
 libraryDependencies ++= Seq(
@@ -15,7 +17,8 @@ libraryDependencies ++= Seq(
     "joda-time" % "joda-time" % "2.0",
     "org.joda" % "joda-convert" % "1.2",
     "com.google.code.gson" % "gson" % "1.7.1",
-    "junit" % "junit" % "4.8.1" % "test"
+    "junit" % "junit" % "4.8.1" % "test",
+    "org.mongojack" % "mongojack" % "2.1.0"
 )
 
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html

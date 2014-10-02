@@ -9,7 +9,7 @@ import scala.collection.{mutable => m}
  * Other implementations may be ones backed by mongodb, hadoop or even by ordinary relational databases.
  */
 
-object MemoryDb extends Db {
+object InMemoryBitemporalDatabase extends BitemporalDatabase {
 
   override def tableCount() : Int = {
     this.tables.size

@@ -19,7 +19,7 @@ import java.util.Date
  * 8) update-overwrite: save an object with given validity. This will adjust temporal boundaries of overlapping
  *    instances of the same object.
  */
-trait Db {
+trait BitemporalDatabase {
 
   def tableCount(): Int
   def countInstances[T](logicalId: Int, t: T) : Int

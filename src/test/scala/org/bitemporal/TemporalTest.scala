@@ -5,7 +5,7 @@ import org.scalatest.{FlatSpec, Matchers}
 
 class TemporalTest extends FlatSpec with Matchers {
 
-  MemoryDb.clearDatabase()
+  InMemoryBitemporalDatabase.clearDatabase()
 
   // create two different temporal student objects
   val s1 : Temporal[Student] = new Temporal[Student](new Student("Some", "Body"), new Period(TestData.d1, TestData.d4))

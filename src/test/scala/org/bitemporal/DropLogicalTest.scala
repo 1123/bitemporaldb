@@ -11,7 +11,7 @@ import org.scalatest.BeforeAndAfter
 
 class DropLogicalTest extends FlatSpec with Matchers with BeforeAndAfter {
 
-  MemoryDb.clearDatabase()
+  InMemoryBitemporalDatabase.clearDatabase()
   
   var s1Id = 0
   var s2Id = 0
@@ -31,28 +31,28 @@ class DropLogicalTest extends FlatSpec with Matchers with BeforeAndAfter {
   behavior of "a MemoryDb"
 
   it should "be able to store objects with a validity" in {
-	  s1Id = MemoryDb.store(s1, new Period(yesterday, tomorrow))
-	  s2Id = MemoryDb.store(s2, new Period(yesterday, tomorrow))
+	  s1Id = InMemoryBitemporalDatabase.store(s1, new Period(yesterday, tomorrow))
+	  s2Id = InMemoryBitemporalDatabase.store(s2, new Period(yesterday, tomorrow))
   }
 
   it should "correctly count logical instances" in {
-	  MemoryDb.countLogical(s1) should be (2)
+	  InMemoryBitemporalDatabase.countLogical(s1) should be (2)
   }
 
   it should "correctly count temporal and technical instances of a logical object" in {
-	  MemoryDb.countInstances(s1Id, new Student()) should be (1)
+	  InMemoryBitemporalDatabase.countInstances(s1Id, new Student()) should be (1)
   }
   
   it should "allow to find objects using a bitemporal context" in {
       val queryContext : BitemporalContext = new BitemporalContext(new Date(), new Date())
-	  MemoryDb.findLogical(new Student(), s1Id, queryContext).get.element should be (s1)
-	  MemoryDb.findLogical(new Student(), s2Id, queryContext).get.element should be (s2)
+	  InMemoryBitemporalDatabase.findLogical(new Student(), s1Id, queryContext).get.element should be (s1)
+	  InMemoryBitemporalDatabase.findLogical(new Student(), s2Id, queryContext).get.element should be (s2)
   }
   
   it should "be able to drop logical objects with all its instances" in {
-	  MemoryDb.dropLogical(s1Id, new Student())
-	  MemoryDb.countLogical(s1) should be (1)
-	  MemoryDb.countInstances(s1Id, new Student()) should be (0)
+	  InMemoryBitemporalDatabase.dropLogical(s1Id, new Student())
+	  InMemoryBitemporalDatabase.countLogical(s1) should be (1)
+	  InMemoryBitemporalDatabase.countInstances(s1Id, new Student()) should be (0)
   }
   
 }
