@@ -13,6 +13,7 @@ project/project
 .project
 .scala_dependencies
 .settings
+.cache
 
 # IntelliJ
 .idea

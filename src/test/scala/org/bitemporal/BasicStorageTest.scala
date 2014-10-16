@@ -1,6 +1,6 @@
 package org.bitemporal
 
-import org.bitemporal.domain.Student
+import org.bitemporal.mongodb.Student
 import org.scalatest._
 
 /**
@@ -10,7 +10,7 @@ import org.scalatest._
 
 class BasicStorageTest extends FlatSpec with Matchers {
 
-    behavior of "a MemoryDb"
+    behavior of "a BitemporalDatabase"
 
     InMemoryBitemporalDatabase.clearDatabase()
 

@@ -1,21 +1,21 @@
 package org.bitemporal
 
 import java.util.Date
-
 import scala.collection.{mutable => m}
+import scala.collection.mutable.HashMap
 
 /**
  * This is an in-memory implementation of the bitemporal database interface.
  * Other implementations may be ones backed by mongodb, hadoop or even by ordinary relational databases.
  */
 
-object InMemoryBitemporalDatabase extends BitemporalDatabase {
+object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
 
   override def tableCount() : Int = {
     this.tables.size
   }
 
-  private var tables : m.HashMap[String, Collection[Object]] = new m.HashMap[String, Collection[Object]]()
+  private var tables : HashMap[String, Collection[Object]] = new HashMap[String, Collection[Object]]()
 
   override def countInstances[T](logicalId: Int, t: T) : Int = collectionFor(t).get.countInstances(logicalId)
   override def countTemporal[T](t: T) : Int = collectionFor(t).get.countTemporal()
@@ -27,22 +27,6 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase {
 
   override def updateLogical[T](logicalId : Int, temporal: T, validity : Period , date: Date) {
     collectionFor(temporal).get.updateLogical(logicalId, temporal, validity, date)
-  }
-
-  /**
-   * drop a technical version of an object.
-   *
-   * TODO: this is not implemented yet.
-   * TODO: it probably would be cleaner to only pass in the technical ID, instead of the entire object.
-   *
-   * @param t the object to drop
-   * @tparam T the type of the object
-   */
-
-  override def dropTemporal[T](t: Temporal[T]) {
-    if (t.technicalId < 0) {
-      throw new RuntimeException("Cannot drop a temporal without temporal id.")
-    }
   }
 
   /**
@@ -69,7 +53,7 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase {
    * @tparam T the data type
    * @return
    */
-  override def findLogical[T](t: T, logicalId: Int, context: BitemporalContext) : Option[Temporal[T]] =
+  override def findLogical[T](t: T, logicalId: Int, context: BitemporalContext) : Option[Temporal[T, Int]] =
     collectionFor(t).get.findLogical(logicalId, context)
 
   /**
@@ -77,7 +61,7 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase {
    * @return the collection holding all currently stored instances of T.
    */
 
-  override def collectionFor[T](t: T): Option[Collection[T]] =
+  def collectionFor[T](t: T): Option[Collection[T]] =
     collection(t.getClass.toString).asInstanceOf[Option[Collection[T]]]
 
   /**
@@ -86,7 +70,7 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase {
    * @return the collection
    */
 
-  override def collection(name: String) : Option[Collection[Object]] = this.tables.get(name)
+  def collection(name: String) : Option[Collection[Object]] = this.tables.get(name)
 
   /**
    * Insert a new logical object into the database. The transaction time is the current time.
@@ -141,6 +125,6 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase {
     this.tables.put(t.getClass.toString, new Collection[Object](t.getClass.toString))
   }
 
-  override def clearDatabase() { tables = new m.HashMap[String, Collection[Object]]() }
+  override def clearDatabase() { tables = new HashMap[String, Collection[Object]]() }
 
 }

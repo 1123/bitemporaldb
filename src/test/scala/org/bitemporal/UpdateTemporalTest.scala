@@ -2,7 +2,7 @@ package org.bitemporal
 
 import java.util.Date
 
-import org.bitemporal.domain.Student
+import org.bitemporal.mongodb.Student
 import org.scalatest.{FlatSpec, Matchers}
 
 import com.google.gson.Gson;
@@ -21,7 +21,7 @@ import com.google.gson.Gson;
 
 class UpdateTemporalTest extends FlatSpec with Matchers {
 
-  behavior of "The MemoryDb"
+  behavior of "A Bitemporal Database"
   
   it should "allow updates for existing objects and retrieval with a bitemporal context" in {
     
@@ -38,7 +38,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     // save the other temporal version
     InMemoryBitemporalDatabase.updateLogical(sId, t, tPeriod)
     val context1 =  new BitemporalContext(new Date(), TestData.d1)
-    val retrieved1: Temporal[Student] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
+    val retrieved1 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
     Thread.sleep(10)
     
     InMemoryBitemporalDatabase.updateLogical(sId, new Student("John", "Doe"), sPeriod)
@@ -49,7 +49,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     retrieved2.element should equal (retrieved1.element)
 
     // search with the new transaction time. Thus we expect to find the correct/updated name.
-    val retrieved3 : Temporal[Student] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
+    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
     retrieved3.element.firstName should be ("John")
   }
 }

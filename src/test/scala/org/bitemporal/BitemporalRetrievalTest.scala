@@ -1,6 +1,6 @@
 package org.bitemporal
 
-import domain.Student
+import org.bitemporal.mongodb.Student
 import org.scalatest.{ Matchers, FlatSpec }
 
 class BitemporalRetrievalTest extends FlatSpec with Matchers {

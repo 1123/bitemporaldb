@@ -1,30 +1,20 @@
 package org.bitemporal
 
 import java.util.Date
-
-import scala.collection.{mutable => m}
+import scala.collection.mutable.HashMap
 
 class Collection[T](n : String) {
-
-  def containsTechnical(logicalId: Int, technicalId: Int) : Boolean = {
-    this.getTechnical(logicalId, technicalId) != None
-  }
-
-  def getTechnical(technicalId: Int, logicalId: Int) : Option[Temporal[T]] = {
-    val myList : List[Temporal[T]] = this.get(logicalId).filter(elem => technicalId == elem.technicalId)
-    if (myList.size > 0) Some(myList.head) else None
-  }
 
   var maxTechnicalId : Int = 0
   var maxLogicalId : Int = 0
   val name : String = n
-  var table = new m.HashMap[Int, List[Temporal[T]]]()
+  var table = new HashMap[Int, List[Temporal[T,Int]]]()
 
   /**
    * Find the version of the temporal object for the given bitemporal context.
    */
 
-  def findLogical(id : Int, context : BitemporalContext) : Option[Temporal[T]] = {
+  def findLogical(id : Int, context : BitemporalContext) : Option[Temporal[T, Int]] = {
     if (id < 0) {
       throw new BitemporalStorageException("cannot find without a given logical Id.")
     }
@@ -47,7 +37,7 @@ class Collection[T](n : String) {
    * @return all instances that have been found.
    */
 
-  def get(logicalId: Int) : List[Temporal[T]] = {
+  def get(logicalId: Int) : List[Temporal[T, Int]] = {
     table.get(logicalId).get
   }
 
@@ -96,8 +86,8 @@ class Collection[T](n : String) {
    * @return a list of instances that belong to the same class as t
    */
 
-  def instances(id: Int) : List[Temporal[T]] = {
-    if (this.table.get(id) == None) return List[Temporal[T]]()
+  def instances(id: Int) : List[Temporal[T, Int]] = {
+    if (this.table.get(id) == None) return List[Temporal[T, Int]]()
     this.table.get(id).get
   }
 
@@ -116,16 +106,16 @@ class Collection[T](n : String) {
   def updateLogical(logicalId: Int, t : T, validity: Period, when: Date) {
     if (! this.table.contains(logicalId))
       throw new BitemporalStorageException("No previous version for this object can be found.")
-    val candidates : List[Temporal[T]] = this.instances(logicalId).filter(_.active)
-    val unaffected : List[Temporal[T]] = candidates.filter(_.vPeriod.disjunct(validity))
-    val affected : List[Temporal[T]] = candidates.filter(_.vPeriod.overlaps(validity))
-    val temporal = new Temporal(t, validity)
-    val updated : List[List[Temporal[T]]] = affected.map(_.update(temporal, when))
-    val updated_flat : List[Temporal[T]] = updated.flatten
+    val candidates : List[Temporal[T, Int]] = this.instances(logicalId).filter(_.active)
+    val unaffected : List[Temporal[T, Int]] = candidates.filter(_.vPeriod.disjunct(validity))
+    val affected : List[Temporal[T, Int]] = candidates.filter(_.vPeriod.overlaps(validity))
+    val temporal = new Temporal[T, Int](t, validity)
+    val updated : List[List[Temporal[T, Int]]] = affected.map(_.update(temporal, when))
+    val updated_flat : List[Temporal[T, Int]] = updated.flatten
     for (aff <- affected) {
       aff.tPeriod.to = when
     }
-    temporal.technicalId = maxTechnicalId
+    temporal.technicalId = Some(maxTechnicalId)
     temporal.tPeriod.from = when
     maxTechnicalId += 1
     this.table.update(
@@ -164,14 +154,14 @@ class Collection[T](n : String) {
    */
 
   def store(t: T, when: Date, validity: Period) : Int = {
-    val toStore = new Temporal(t, validity)
-    toStore.logicalId = maxLogicalId
+    val toStore = new Temporal[T, Int](t, validity)
+    toStore.logicalId = Some(maxLogicalId)
     maxLogicalId += 1
-    toStore.technicalId = maxTechnicalId
+    toStore.technicalId = Some(maxTechnicalId)
     maxTechnicalId += 1
     toStore.tPeriod.from = when
-    this.table.update(toStore.logicalId, toStore :: List[Temporal[T]]())
-    toStore.logicalId
+    this.table.update(toStore.logicalId.get, toStore :: List[Temporal[T, Int]]())
+    toStore.logicalId.get
   }
 
   /**

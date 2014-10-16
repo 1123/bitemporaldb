@@ -19,28 +19,30 @@ import java.util.Date
  * 8) update-overwrite: save an object with given validity. This will adjust temporal boundaries of overlapping
  *    instances of the same object.
  */
-trait BitemporalDatabase {
+
+/**
+ * @tparam I : the type of the identifiers used in the bitemporal database. 
+ * This may be Strings for the mongodb implementation or Integers for the in memory implementation.
+ */
+
+trait BitemporalDatabase[I] {
 
   def tableCount(): Int
-  def countInstances[T](logicalId: Int, t: T) : Int
+  def countInstances[T](logicalId: I, t: T) : Int
   def countTemporal[T](t: T) : Int
   def countTechnical[T](t: T) : Int
   def countLogical[T](t: T) : Int
-  def updateLogical[T](logicalId: Int, instance : T, validity: Period)
-  def updateLogical[T](logicalId: Int, instance : T, validity: Period, date: Date)
-  // drop a given version of an object in valid time
-  def dropTemporal[T](t: Temporal[T])
+  def updateLogical[T](logicalId: I, instance : T, validity: Period)
+  def updateLogical[T](logicalId: I, instance : T, validity: Period, date: Date)
   // drop an object together with all its temporal and technical versions
-  def dropLogical[T](logicalId: Int, t : T)
+  def dropLogical[T](logicalId: I, t : T)
   def countCollections() : Int
-  def findLogical[T](t: T, id: Int) : Option[Temporal[T]] =
+  def findLogical[T](t: T, id: I) : Option[Temporal[T, I]] =
     findLogical(t, id, new BitemporalContext(new Date(), new Date()))
-  def findLogical[T](t: T, id: Int, context: BitemporalContext) : Option[Temporal[T]]
-  def collectionFor[T](t : T) : Option[Collection[T]]
-  def collection(name: String) : Option[Collection[Object]]
-  def store[T](t : T) : Int
-  def store[T](t : T, when: Date) : Int
-  def store[T](t : T, validity: Period) : Int
-  def store[T](t : T, when : Date, validity : Period) : Int
+  def findLogical[T](t: T, id: I, context: BitemporalContext) : Option[Temporal[T, I]]
+  def store[T](t : T) : I
+  def store[T](t : T, when: Date) : I
+  def store[T](t : T, validity: Period) : I
+  def store[T](t : T, when : Date, validity : Period) : I
   def clearDatabase()
 }

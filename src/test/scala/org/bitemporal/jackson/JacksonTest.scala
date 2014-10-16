@@ -3,7 +3,7 @@ package org.bitemporal.jackson
 import org.scalatest._
 import org.mongojack.JacksonDBCollection
 import com.mongodb.MongoClient
-import org.bitemporal.domain.Student
+import org.bitemporal.mongodb.Student
 
 
 class JacksonTest extends FlatSpec with Matchers {

@@ -2,16 +2,11 @@ package org.bitemporal
 
 import java.util.Date
 
-class Period(f : Date, t : Date) {
+class Period(f : Date = new Date(Long.MinValue), t : Date = new Date(Long.MaxValue)) {
 
-
-  var from: Date = if (f == null) {
-    new Date(Long.MinValue)
-  } else {
-    f
-  }
-  var to: Date = if (t == null) { new Date(Long.MaxValue) } else { t }
-
+  var from = f
+  var to = t
+  
   def before(other : Period) : Boolean = {
     this.lte(this.to, other.from)
   }

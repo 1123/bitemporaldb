@@ -2,7 +2,7 @@ package org.bitemporal
 
 import org.scalatest.{FlatSpec, Matchers}
 import java.util.Date
-import org.bitemporal.domain.Student
+import org.bitemporal.mongodb.Student
 
 class TechnicalStorageTest extends FlatSpec with Matchers {
 
