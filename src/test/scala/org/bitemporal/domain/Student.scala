@@ -1,4 +1,4 @@
-package org.bitemporal.mongodb
+package org.bitemporal.domain
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.mongojack.ObjectId

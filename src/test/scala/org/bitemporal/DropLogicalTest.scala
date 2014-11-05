@@ -1,7 +1,7 @@
 package org.bitemporal
 
 import java.util.{Calendar, Date}
-import org.bitemporal.mongodb.Student
+import org.bitemporal.domain.Student
 import org.scalatest.{FlatSpec, Matchers}
 import org.scalatest.BeforeAndAfter
 
