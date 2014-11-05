@@ -22,3 +22,8 @@ project/project
 *.ipr
 *.iws
 .history
+
+#latex
+bitemporal.aux
+bitemporal.log
+bitemporal.pdf

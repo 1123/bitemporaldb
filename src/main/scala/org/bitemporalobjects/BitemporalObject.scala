@@ -24,7 +24,7 @@ class BitemporalObject[T](t: T, p: Period, creationDate : Date = new Date()) {
 class Temporal[T](t: T, p: Period, d: Date) {
   val value = t;
   val validity = p;
-  val tvalidity = new Period(f = d)
+  val tvalidity = new Period(d, new Date(Long.MaxValue))
 
   def active(when: Date = new Date()): Boolean = {
     return tvalidity.containsDate(when);

@@ -1,15 +1,30 @@
-package org.bitemporal
+package org.bitemporal.mongodb
 
 import java.util.Date
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.bitemporal.Period
+import org.bitemporal.Temporal
+import org.bson.types.ObjectId
 
-class Temporal[T, I](t: T, v: Period) {
+class MongoTemporal[T >: Null, I >: Null](t: T, v: Period) {
 
+  def this() {
+    this(null, null)
+  }
+  
+  @JsonProperty
   val element: T = t
+  @JsonProperty
   val vPeriod: Period = v
-  val tPeriod = new Period(new Date(Long.MinValue), new Date(Long.MaxValue))
-  var logicalId: Option[I] = None
-  var technicalId: Option[I] = None
+  @JsonProperty
+  val tPeriod = new Period()
+  
+  @ObjectId
+  @JsonProperty
+  var _id = new ObjectId()
+  
+  @JsonProperty
+  var logicalId: I = null
 
   def active: Boolean = {
     this.tPeriod.to == new Date(Long.MaxValue)

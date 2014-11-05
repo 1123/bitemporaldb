@@ -1,11 +1,24 @@
 package org.bitemporal
 
 import java.util.Date
+import com.fasterxml.jackson.annotation.JsonProperty
+import org.joda.time.DateTime
 
-class Period(f : Date = new Date(Long.MinValue), t : Date = new Date(Long.MaxValue)) {
+/**
+ * Das minimale Datum setzen wir auf den 1. Januar des Jahres 0, 
+ * da MongoDb nicht new Date(Long.MinValue) speichern kann. 
+ */
 
+class Period(f : Date, t : Date) {
+
+  @JsonProperty
   var from = f
+  @JsonProperty
   var to = t
+  
+  def this() {
+    this(new DateTime(0,1,1,0,0,0).toDate(), new DateTime(100000,1,1, 0, 0, 0).toDate())
+  }
   
   def before(other : Period) : Boolean = {
     this.lte(this.to, other.from)
