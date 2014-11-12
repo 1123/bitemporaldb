@@ -1,3 +1,9 @@
+services:
+  - mongodb
+
 language: scala
 jdk:
-   - oraclejdk8
+  - oraclejdk8
+
+before_script:
+  - sleep 15
