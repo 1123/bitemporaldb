@@ -66,14 +66,14 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     val s  = new Student("Allen", "Doe")
     val t  = new Student("Allen", "Dot")
 
-    val sPeriod = new Period(TestData.d1, TestData.d2)
-    val tPeriod = new Period(TestData.d3, TestData.d4)
+    val sPeriod = new Period(d1, d2)
+    val tPeriod = new Period(d3, d4)
 
     val sId = InMemoryBitemporalDatabase.store(s, sPeriod)
 
     // save the other temporal version
     InMemoryBitemporalDatabase.updateLogical(sId, t, tPeriod)
-    val context1 =  new BitemporalContext(new Date(), TestData.d1)
+    val context1 =  new BitemporalContext(new Date(), d1)
     val retrieved1 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
     Thread.sleep(10)
     
@@ -85,7 +85,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     retrieved2.element should equal (retrieved1.element)
 
     // search with the new transaction time. Thus we expect to find the correct/updated name.
-    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
+    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), d1)).get;
     retrieved3.element.firstName should be ("John")
   }
 }
