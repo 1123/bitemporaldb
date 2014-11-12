@@ -11,9 +11,7 @@ import org.joda.time.DateTime
 
 class Period(f : Date, t : Date) {
 
-  @JsonProperty
   var from = f
-  @JsonProperty
   var to = t
   
   def this() {

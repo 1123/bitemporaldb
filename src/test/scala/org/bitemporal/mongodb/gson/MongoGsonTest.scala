@@ -1,36 +1,31 @@
-package org.bitemporal.mongodb
+package org.bitemporal.mongodb.gson
 
-import com.mongodb.MongoClient
-import java.util.Date
-import com.fasterxml.jackson.annotation.JsonProperty
-import org.scalatest.Matchers
-import org.scalatest.FlatSpec
-import org.joda.time.DateTime
-import com.mongodb.DBObject
-import com.mongodb.util.JSON
-import com.mongodb.util.JSON
-import com.mongodb.BasicDBObject
 import org.bson.types.ObjectId
+import org.scalatest.FlatSpec
+import org.scalatest.Matchers
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import com.google.gson.InstanceCreator
-import java.lang.reflect.Type
+import com.mongodb.BasicDBObject
+import com.mongodb.DBObject
+import com.mongodb.MongoClient
+import com.mongodb.util.JSON
 
 class Outer {
 
   var _id : ObjectId = null
-  
   val name = "Some Body"
-  
   val inner = new Inner()
-    
 }
 
 class Inner {
-  
   val address = "Some Where"
-  
 }
+
+/**
+ * This test shows that MongoDb can store objects which have been serialized to Json using Gson.
+ * It also shows that these objects can be retrieved from mongodb using their stored id and 
+ * deserialized to their original objects. 
+ */
 
 class PlainJsonTest extends FlatSpec with Matchers {
 
@@ -40,18 +35,7 @@ class PlainJsonTest extends FlatSpec with Matchers {
   val db = client.getDB("nested_test")
   
   val collection = db.getCollection("outer")
-  var id : ObjectId = null
   var id2 : ObjectId = null
-  
-  it should "be able to store Json" in {
-    val dbObject : DBObject = JSON.parse("{'name':'mkyong', 'age':30}").asInstanceOf[DBObject]
-    val writeResult = collection.save(dbObject);
-    id = dbObject.get("_id").asInstanceOf[ObjectId]
-  }
-  
-  it should "be able to retrieve by Id" in {
-    print(collection.findOne(new BasicDBObject("_id", id)).toString())
-  }
   
   it should "be able to store objects serialized by Gson" in {
     val outer = new Outer()
