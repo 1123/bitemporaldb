@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/1123/StackExchangeImporter.png)](https://travis-ci.org/1123/bitemporaldb)
+
 Bitemporal
 ----------
 
@@ -8,7 +10,7 @@ persistent implementation, since it allows for document oriented storage and
 therefore helps to simplify the data model of your application, reducing the
 number of joins, which must be thought out carefully in a bitemporal context.
 
-For an explanation of the concept of bitemporality see http://en.wikipedia.org/wiki/Temporal\_database
+For an explanation of the concept of bitemporality see http://en.wikipedia.org/wiki/Temporal_database
 
 The concept of bitemporal data management is important for many industries
 ranging from banking over insurances to the public sector. Ordinary databases
