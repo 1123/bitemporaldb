@@ -1,7 +1,6 @@
 package org.bitemporal
 
 import java.util.Date
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.joda.time.DateTime
 
 /**

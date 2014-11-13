@@ -1,11 +1,10 @@
 package org.bitemporal
 
 import java.util.Date
-
 import org.bitemporal.domain.Student
 import org.scalatest.{FlatSpec, Matchers}
-
 import com.google.gson.Gson;
+import org.joda.time.DateTime
 
 /*
  * Store two temporal versions of the same object to the database.
@@ -16,12 +15,17 @@ import com.google.gson.Gson;
  * Use Case:
  * + A person has the name "Allen Doe" from Date d1 to Date d2
  * + The person marries on d3 and changes his name to "Allen Dot"
- * + We find out that the original name should have been "Allen Doet", and record this to the database.
+ * + We find out that the original name should have been "John Doe", and record this to the database.
  */
 
 class UpdateTemporalTest extends FlatSpec with Matchers {
 
-  behavior of "A Bitemporal Database"
+  val d1 = new DateTime(2013,6,7,0,0,0).toDate // 2013-06-07
+  val d2 = new DateTime(2013,6,8,0,0,0).toDate // 2013-06-08
+  val d3 = new DateTime(2013,6,9,0,0,0).toDate // 2013-06-09
+  val d4 = new DateTime(2013,6,10,0,0,0).toDate // 2013-06-10
+
+  behavior of "an InMemoryBitemporalDatabase"
   
   it should "allow updates for existing objects and retrieval with a bitemporal context" in {
     
@@ -30,14 +34,14 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     val s  = new Student("Allen", "Doe")
     val t  = new Student("Allen", "Dot")
 
-    val sPeriod = new Period(TestData.d1, TestData.d2)
-    val tPeriod = new Period(TestData.d3, TestData.d4)
+    val sPeriod = new Period(d1, d2)
+    val tPeriod = new Period(d3, d4)
 
     val sId = InMemoryBitemporalDatabase.store(s, sPeriod)
 
     // save the other temporal version
     InMemoryBitemporalDatabase.updateLogical(sId, t, tPeriod)
-    val context1 =  new BitemporalContext(new Date(), TestData.d1)
+    val context1 =  new BitemporalContext(new Date(), d1)
     val retrieved1 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, context1).get
     Thread.sleep(10)
     
@@ -49,7 +53,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     retrieved2.element should equal (retrieved1.element)
 
     // search with the new transaction time. Thus we expect to find the correct/updated name.
-    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), TestData.d1)).get;
+    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), d1)).get;
     retrieved3.element.firstName should be ("John")
   }
 }

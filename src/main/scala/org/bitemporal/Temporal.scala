@@ -1,7 +1,6 @@
 package org.bitemporal
 
 import java.util.Date
-import com.fasterxml.jackson.annotation.JsonProperty
 
 class Temporal[T, I](t: T, v: Period) {
 

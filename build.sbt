@@ -2,9 +2,9 @@ name := "bitemporal"
 
 parallelExecution in Test := false
 
-organization := "none"
+organization := "github.com/1123"
 
-version := "1.0"
+version := "0.1"
 
 scalaVersion := "2.11.2"
 
@@ -17,9 +17,10 @@ libraryDependencies ++= Seq(
     "joda-time" % "joda-time" % "2.0",
     "org.joda" % "joda-convert" % "1.2",
     "com.google.code.gson" % "gson" % "1.7.1",
-    "junit" % "junit" % "4.8.1" % "test",
-    "org.mongojack" % "mongojack" % "2.1.0"
+    "junit" % "junit" % "4.8.1" % "test"
 )
+
+libraryDependencies += "org.mongodb" % "mongo-java-driver" % "2.12.4"
 
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html
 
