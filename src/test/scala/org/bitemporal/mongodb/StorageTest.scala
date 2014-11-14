@@ -2,8 +2,6 @@ package org.bitemporal.mongodb
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import org.bitemporal.Period
 import org.joda.time.DateTime
@@ -36,26 +34,18 @@ class StorageTest extends FlatSpec with Matchers with BeforeAndAfter {
   it should "be able to store temporal objects of different classes" in {
     myDb.clearCollection(new Building())
     myDb.clearCollection(new Airplane())
-    buildingId = myDb.store(new Building("Downing Street 10"), vPeriod1, buildingType())
-	airplaneId = myDb.store(new Airplane("A380"), vPeriod1, airplaneType())
-  }
-  
-  def airplaneType() = {
-    new TypeToken[SimpleTemporal[Airplane]]() {}.getType()
-  }
-  
-  def buildingType() = {
-    new TypeToken[SimpleTemporal[Building]]() {}.getType()
+    buildingId = myDb.store(new Building("Downing Street 10"), vPeriod1)
+	airplaneId = myDb.store(new Airplane("A380"), vPeriod1)
   }
   
   it should "be able to retrieve objects given a logical id using the default temporal context" in {
-    val building : Building = myDb.findOne(new Building(), buildingId, buildingType())
+    val building : Building = myDb.findOne(new Building(), buildingId)
     building.address should be ("Downing Street 10")
   }
   
   
   it should "be able to retrieve objects with collections" in {
-    val airplane : Airplane = myDb.findOne(new Airplane(), airplaneId, airplaneType())
+    val airplane : Airplane = myDb.findOne(new Airplane(), airplaneId)
     airplane.typ should be ("A380")
     airplane.passengers.size() should be (1)
     airplane.passengers.get(0) should be ("me")

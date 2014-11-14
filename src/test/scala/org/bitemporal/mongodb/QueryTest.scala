@@ -2,8 +2,6 @@ package org.bitemporal.mongodb
 
 import org.scalatest.FlatSpec
 import org.scalatest.Matchers
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import org.bitemporal.Period
 import org.joda.time.DateTime
@@ -35,19 +33,15 @@ class QueryTest extends FlatSpec with Matchers {
 
   it should "be able to answer queries with a bitemporal context" in {
      myDb.clearCollection(new Building())
-	 val buildingId = myDb.store(new Building("22nd Street"), year2014, buildingType())
-	 myDb.update(new Building("23rd Street"), buildingId, year2015, buildingType())
-	 val found : Option[Building] = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), xmas2014), buildingType())
+	 val buildingId = myDb.store(new Building("22nd Street"), year2014)
+	 myDb.update(new Building("23rd Street"), buildingId, year2015)
+	 val found : Option[Building] = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), xmas2014))
 	 found should not be (None)
 	 found.get.address should be ("22nd Street")
-	 val found2 = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), newYear2015), buildingType())
+	 val found2 = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), newYear2015))
 	 found2.get.address should be ("23rd Street")
-     val found3 = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), newYear2017), buildingType())
+     val found3 = myDb.find(classOf[Building], buildingId, new BitemporalContext(new Date(), newYear2017))
 	 found3 should be (None)
-  }
-  
-  def buildingType() = {
-    new TypeToken[SimpleTemporal[Building]]() {}.getType()
   }
   
 }

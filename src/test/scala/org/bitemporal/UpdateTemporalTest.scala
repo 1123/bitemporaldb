@@ -3,7 +3,6 @@ package org.bitemporal
 import java.util.Date
 import org.bitemporal.domain.Student
 import org.scalatest.{FlatSpec, Matchers}
-import com.google.gson.Gson;
 import org.joda.time.DateTime
 
 /*
