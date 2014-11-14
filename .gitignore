@@ -1,5 +1,5 @@
 #SBT
-target
+/target
 project/target
 project/project
 
@@ -27,3 +27,6 @@ project/project
 bitemporal.aux
 bitemporal.log
 bitemporal.pdf
+
+#mvn 
+example-java/target

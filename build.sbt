@@ -2,7 +2,7 @@ name := "bitemporal"
 
 parallelExecution in Test := false
 
-organization := "github.com/1123"
+organization := "com.github.1123"
 
 version := "0.1"
 
