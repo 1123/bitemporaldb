@@ -7,3 +7,5 @@ jdk:
 
 before_script:
   - sleep 15
+
+script: "./run-tests.sh"
