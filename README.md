@@ -100,6 +100,7 @@ Usage from Java
 ---------------
 Once the maven jar and pom is installed to your local repository, you can use this library from other projects, also from Java projects. The subdirectory example-java in this repository includes an example of how to use the bitemporal mongodb layer from java. Here is an excerpt of the relevant code. 
 
+BitemporalTest.java:
 ```Java
 public class BitemporalTest {
 
@@ -127,6 +128,39 @@ public class BitemporalTest {
 }
 ```
 
+Room.java:
+```java
+public class Room {
+
+    private float size;
+    private float height;
+
+    public Room() {
+        // for clear collection
+    }
+
+    public Room(float size, float height) {
+        this.size = size;
+        this.height = height;
+    }
+
+    public float getSize() {
+        return size;
+    }
+
+    public void setSize(float size) {
+        this.size = size;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+}
+```
 
 
 
