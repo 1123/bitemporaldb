@@ -113,16 +113,12 @@ public class BitemporalTest {
     public void test() {
         BitemporalMongoDb bitemporalMongoDb = new BitemporalMongoDb();
         bitemporalMongoDb.clearCollection(new Room());
-        String id1 = bitemporalMongoDb.store(new Room(25.0f, 2.0f), new Period(), this.roomType());
-        bitemporalMongoDb.update(new Room(24.0f, 2.0f), id1, new Period(JAN2015, FEB2015), roomType());
-        Room roomInJanuary = bitemporalMongoDb.find(Room.class, id1, new BitemporalContext(new Date(), BETWEEN), roomType()).get();
+        String id1 = bitemporalMongoDb.store(new Room(25.0f, 2.0f), new Period());
+        bitemporalMongoDb.update(new Room(24.0f, 2.0f), id1, new Period(JAN2015, FEB2015));
+        Room roomInJanuary = bitemporalMongoDb.find(Room.class, id1, new BitemporalContext(new Date(), BETWEEN)).get();
         assertEquals(roomInJanuary.getSize(), 24.0f, 0.1f);
-        Room roomInFebruary = bitemporalMongoDb.find(Room.class, id1, new BitemporalContext(new Date(), AFTER), roomType()).get();
+        Room roomInFebruary = bitemporalMongoDb.find(Room.class, id1, new BitemporalContext(new Date(), AFTER)).get();
         assertEquals(roomInFebruary.getSize(), 25.0f, 0.1f);
-    }
-
-    private Type roomType() {
-        return new TypeToken<SimpleTemporal<Room>>(){}.getType();
     }
 
 }
