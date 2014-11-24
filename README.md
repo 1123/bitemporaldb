@@ -3,9 +3,9 @@
 Bitemporal
 ----------
 
-This is a prototype of a bitemporal, object oriented in-memory database written
-in Scala. Next to the in-memory prototype, it also offers a persistent
-bitemporal database based on MongoDB. MongoDB has been chosen as the first
+This is a lean, bitemporal, object oriented bitemporal database layer on top of Mongodb written
+in Scala. Also an in-memory bitemporal database based on Hashmaps that can be used without a database is included. 
+MongoDB has been chosen as the first
 persistent implementation, since it allows for document oriented storage and
 therefore helps to simplify the data model of your application, reducing the
 number of joins, which must be thought out carefully in a bitemporal context.
