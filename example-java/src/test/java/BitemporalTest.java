@@ -1,12 +1,9 @@
-import com.google.gson.reflect.TypeToken;
 import org.bitemporal.BitemporalContext;
 import org.bitemporal.Period;
 import org.bitemporal.mongogson.BitemporalMongoDb;
-import org.bitemporal.mongogson.SimpleTemporal;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;

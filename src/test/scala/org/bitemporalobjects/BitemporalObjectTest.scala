@@ -8,6 +8,14 @@ import java.util.Date
 
 /**
  * This is an attempt to use bitemporal objects in stead of a bitemporal database. 
+ * Bitemporal objects store all version and temporal information within the object itself.
+ * 
+ * This allows for greater flexibility and finer grained updates. Yet it requires to derive a 
+ * bitemporal companion class for each class whose instances are to be stored in a bitemporal way.
+ * 
+ * This class would need to be derived by metaprogramming, or by type derivation. Yet I have not seen any
+ * programming language that supports this yet.
+ * 
  */
 
 class BitemporalObjectTest extends FlatSpec with Matchers {

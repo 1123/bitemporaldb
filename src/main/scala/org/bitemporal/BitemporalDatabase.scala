@@ -26,10 +26,26 @@ import java.util.Date
  */
 
 trait BitemporalDatabase[I] {
-
+  /**
+   * Return the number of distinct classes that are managed by this database.
+   */
   def tableCount(): Int
+  
+  /**
+   * Returns the number of instances for a given logical identifier. 
+   * 
+   * @param logicalId the logical identifier
+   * @param t a dummy instance of T such that the DB knows in which collection to look.
+   */
   def countInstances[T](logicalId: I, t: T) : Int
-  def countTemporal[T](t: T) : Int
+  
+  /**
+   * The number of active objects, this may be multiple objects for one logical id.
+   * 
+   * @param t a dummy instance of the class for which to determine the number of active objects.
+   * 
+   */
+  def activeObjects[T](t: T) : Int
   def countTechnical[T](t: T) : Int
   def countLogical[T](t: T) : Int
   def updateLogical[T](logicalId: I, instance : T, validity: Period)

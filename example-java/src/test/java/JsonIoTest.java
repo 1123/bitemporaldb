@@ -1,6 +1,5 @@
 import com.cedarsoftware.util.io.JsonReader;
 import com.cedarsoftware.util.io.JsonWriter;
-import jdk.nashorn.internal.ir.debug.JSONWriter;
 import org.bitemporal.Period;
 import org.bitemporal.mongogson.SimpleTemporal;
 import org.junit.Test;

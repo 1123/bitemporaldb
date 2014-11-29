@@ -17,20 +17,6 @@ import org.bitemporal.BitemporalContext
 import com.cedarsoftware.util.io.JsonWriter
 import com.cedarsoftware.util.io.JsonReader
 
-object MongoConf {
-
-  val minimumDate = new DateTime(0,1,1,0,0,0).toDate()
-  val maximumDate = new DateTime(100000,1,1,0,0,0).toDate()
-  
-  val host = "127.0.0.1"
-  val port = 27017
-  val db = "nested_test"
-    
-  val logicalIdField = "logicalId"  
-  
-}
-
-
 class BitemporalMongoDb {
 
   val client = new MongoClient(MongoConf.host, MongoConf.port)

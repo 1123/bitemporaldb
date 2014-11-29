@@ -26,6 +26,6 @@ class TechnicalStorageTest extends FlatSpec with Matchers {
   InMemoryBitemporalDatabase.countLogical(t) should be (1)
   InMemoryBitemporalDatabase.countInstances(sId, new Student()) should be (2)
   InMemoryBitemporalDatabase.countTechnical(t) should be (2)
-  InMemoryBitemporalDatabase.countTemporal(t) should be (1)
+  InMemoryBitemporalDatabase.activeObjects(t) should be (1)
 
 }

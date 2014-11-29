@@ -21,7 +21,7 @@ class NonOverlappingStorageTest extends FlatSpec with Matchers {
 
   InMemoryBitemporalDatabase.updateLogical(sLogicalId, t, new Period(TestData.d2, TestData.d3))
   InMemoryBitemporalDatabase.countTechnical(s) should be (2)
-  InMemoryBitemporalDatabase.countTemporal(s) should be (2)
+  InMemoryBitemporalDatabase.activeObjects(s) should be (2)
   InMemoryBitemporalDatabase.countLogical(s) should be (1)
 
 }

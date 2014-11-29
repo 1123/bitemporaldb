@@ -16,5 +16,5 @@ class OverlappingStorageTest extends FlatSpec with Matchers {
   InMemoryBitemporalDatabase.countLogical(p1) should be (1)
   InMemoryBitemporalDatabase.countInstances(p1Id, new Product()) should be (3)
   InMemoryBitemporalDatabase.countTechnical(p1) should be (3)
-  InMemoryBitemporalDatabase.countTemporal(p1) should be (2)
+  InMemoryBitemporalDatabase.activeObjects(p1) should be (2)
 }

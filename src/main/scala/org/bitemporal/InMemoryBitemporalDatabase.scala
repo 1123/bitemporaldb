@@ -11,14 +11,20 @@ import scala.collection.mutable.HashMap
 
 object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
 
+  private var tables : HashMap[String, Collection[Object]] = new HashMap[String, Collection[Object]]()
+
+  /**
+   * {@inheritDoc}
+   */
   override def tableCount() : Int = {
     this.tables.size
   }
 
-  private var tables : HashMap[String, Collection[Object]] = new HashMap[String, Collection[Object]]()
-
+  /**
+   * {@inheritDoc}
+   */
   override def countInstances[T](logicalId: Int, t: T) : Int = collectionFor(t).get.countInstances(logicalId)
-  override def countTemporal[T](t: T) : Int = collectionFor(t).get.countTemporal()
+  override def activeObjects[T](t: T) : Int = collectionFor(t).get.activeObjects()
   override def countTechnical[T](t: T) : Int = collectionFor(t).get.countTechnical()
   override def countLogical[T](t: T) : Int = collectionFor(t).get.countLogical()
   override def updateLogical[T](logicalId : Int, temporal: T, validity: Period) {

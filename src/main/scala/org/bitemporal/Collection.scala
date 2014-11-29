@@ -59,7 +59,7 @@ class Collection[T](n : String) {
   /**
    * @return the number of active objects within this collection
    */
-  def countTemporal() : Int = {
+  def activeObjects() : Int = {
     this.table.values.toList.flatten.count(_.active)
   }
 
@@ -80,7 +80,7 @@ class Collection[T](n : String) {
 
   /**
    * This method finds _all_ the instances of a logical object. The instances do not need to be active, neither
-   * do the need to be valid at some certain point in time.
+   * do they need to be valid at some certain point in time.
    *
    * @param id the logical id for which to find the instances.
    * @return a list of instances that belong to the same class as t

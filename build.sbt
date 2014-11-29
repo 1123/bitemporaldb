@@ -23,6 +23,8 @@ libraryDependencies += "org.mongodb" % "mongo-java-driver" % "2.12.4"
 
 libraryDependencies += "com.cedarsoftware" % "json-io" % "2.2.29"
 
+libraryDependencies += "org.elasticsearch" % "elasticsearch" % "1.4.0"
+
 // For Settings/Task reference, see http://www.scala-sbt.org/release/sxr/sbt/Keys.scala.html
 
 // Compiler settings. Use scalac -X for other options and their description.
