@@ -10,11 +10,11 @@ import org.joda.time.DateTime
 
 class Period(f : Date, t : Date) {
 
-  var from = f
-  var to = t
+  var from: Date = f
+  var to: Date = t
   
   def this() {
-    this(new DateTime(0,1,1,0,0,0).toDate(), new DateTime(100000,1,1, 0, 0, 0).toDate())
+    this(new DateTime(0, 1, 1, 0, 0, 0).toDate, new DateTime(100000, 1, 1, 0, 0, 0).toDate)
   }
   
   def before(other : Period) : Boolean = {

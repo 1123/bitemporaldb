@@ -8,7 +8,8 @@ import java.util.Date
  * 2) store two distinct objects without validity ==> use store()
  * 3) store two temporal versions of the same object with non-overlapping validity
  *    ==> use update()
- * 4) reduce/extend the validity of one temporal version of an object --> We need to introduce temporal ids
+ * 4) reduce/extend the validity of one temporal version of an object
+ *    --> We need to introduce temporal ids
  *    ==> use update_temporal
  * 5) drop one temporal version of an object
  *    ==> use drop_temporal

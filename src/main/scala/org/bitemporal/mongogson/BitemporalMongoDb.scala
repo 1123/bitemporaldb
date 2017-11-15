@@ -1,32 +1,24 @@
 package org.bitemporal.mongogson
 
-import org.bson.types.ObjectId
-import com.mongodb.DBObject
+import java.util.{Date, UUID}
+
+import com.cedarsoftware.util.io.{JsonReader, JsonWriter}
+import com.mongodb._
 import com.mongodb.util.JSON
-import com.mongodb.MongoClient
-import org.bitemporal.Period
-import com.mongodb.BasicDBObject
-import com.mongodb.DBCollection
-import com.mongodb.DBCursor
-import org.joda.time.DateTime
-import java.util.Date
+import org.bitemporal.{BitemporalContext, Period}
+
 import scala.language.higherKinds
-import java.util.ArrayList
-import java.util.UUID
-import org.bitemporal.BitemporalContext
-import com.cedarsoftware.util.io.JsonWriter
-import com.cedarsoftware.util.io.JsonReader
 
 class BitemporalMongoDb {
 
   val client = new MongoClient(MongoConf.host, MongoConf.port)
-  val db = client.getDB(MongoConf.db)
+  private val db = client.getDB(MongoConf.db)
 
   def getCollection[T](t : T) : DBCollection = {
-    db.getCollection(t.getClass().toString().replaceAll("\\.", "_").replace("class ", ""))
+    db.getCollection(t.getClass.toString.replaceAll("\\.", "_").replace("class ", ""))
   }
   
-  def clearCollection[T](t : T) = {
+  def clearCollection[T](t : T): WriteResult = {
     getCollection(t).remove(new BasicDBObject())
   }
   
@@ -38,9 +30,9 @@ class BitemporalMongoDb {
    */
   
   def store[T](t: T, vPeriod : Period) : String = {
-	val uuid = UUID.randomUUID().toString()
+	val uuid = UUID.randomUUID().toString
     val myTemporal = new SimpleTemporal[T](t, vPeriod)
-    val json = JsonWriter.objectToJson(myTemporal);
+    val json = JsonWriter.objectToJson(myTemporal)
     val dbObject : DBObject = JSON.parse(json).asInstanceOf[DBObject]
 	dbObject.put(MongoConf.logicalIdField, uuid)
     getCollection(t).save(dbObject)
@@ -51,8 +43,8 @@ class BitemporalMongoDb {
    * Finds one temporal instance without validity information (which may be active or not) for the given logical Id.
    */
   def findOne[T](template : T, id : String) : T = {
-	val json = getCollection(template).findOne(new BasicDBObject(MongoConf.logicalIdField, id)).toString()
-    val parsed : SimpleTemporal[T] = JsonReader.jsonToJava(json).asInstanceOf[SimpleTemporal[T]];
+	val json = getCollection(template).findOne(new BasicDBObject(MongoConf.logicalIdField, id)).toString
+    val parsed : SimpleTemporal[T] = JsonReader.jsonToJava(json).asInstanceOf[SimpleTemporal[T]]
     parsed.value
   }
   
@@ -63,15 +55,15 @@ class BitemporalMongoDb {
   def findTemporals[T](template : T, id : String) : List[SimpleTemporal[T]] = { 
     var result : List[SimpleTemporal[T]] = List[SimpleTemporal[T]]()
     val cursor = getCollection(template).find(new BasicDBObject("logicalId", id))
-    while (cursor.hasNext()) {
-      val parsed : SimpleTemporal[T] = JsonReader.jsonToJava(cursor.next().toString()).asInstanceOf[SimpleTemporal[T]]
+    while (cursor.hasNext) {
+      val parsed : SimpleTemporal[T] = JsonReader.jsonToJava(cursor.next().toString).asInstanceOf[SimpleTemporal[T]]
       result = result ++ List(parsed)
     }
     result
   }
   
   def findAll[T](template : T, id : String) : List[T] = {
-    return this.findTemporals(template, id).map(t => t.value)
+    this.findTemporals(template, id).map(t => t.value)
   }
   
   def findActive[T](template: T, id:String) : List[SimpleTemporal[T]] = {
@@ -83,7 +75,7 @@ class BitemporalMongoDb {
    * insert the updated/new ones. This method can be used to delete all objects for a given logical id.
    */
   def deleteAll[T](template : T, id: String) {
-    getCollection(template).remove(new BasicDBObject(MongoConf.logicalIdField, id));
+    getCollection(template).remove(new BasicDBObject(MongoConf.logicalIdField, id))
   }
   
   /**
@@ -134,7 +126,6 @@ class BitemporalMongoDb {
    * If more than one is found this would be an invalid database state ==> an exception is thrown.
    * The database may not contain an instance for the bitemporal context. Therefore the return type is optional.
    * 
-   * @param template: a (possibly empty) instance to find the correct database collection.
    * @param logicalId: the logical id
    * @param context: the bitemporal context to search for.
    */
@@ -143,8 +134,8 @@ class BitemporalMongoDb {
     val candidates = findTemporals(clazz.newInstance(), logicalId)
     val selected = candidates.filter(_.tPeriod.containsDate(context.transactionDate)).filter(_.vPeriod.containsDate(context.validDate))
     if (selected.size > 1) throw new RuntimeException("Invalid database state")
-    if (selected.size == 0) return None
-    Some(selected(0).value)
+    if (selected.isEmpty) return None
+    Some(selected.head.value)
   }
   
 }

@@ -2,7 +2,6 @@ package org.bitemporal
 
 import java.util.Date
 
-import scala.collection.mutable.HashMap
 import scala.collection.mutable
 
 /**

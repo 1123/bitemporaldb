@@ -1,19 +1,18 @@
 package org.bitemporal.mongogson
 
 import org.bitemporal.Period
-import org.joda.time.DateTime
 import org.bson.types.ObjectId
 import java.util.Date
 
 class SimpleTemporal[T](t : T, vP : Period) {
-  val value = t
-  val vPeriod = vP
+  val value: T = t
+  val vPeriod: Period = vP
   // minimum and maximum Date for lower technical and upper technical validity
   val tPeriod = new Period(MongoConf.minimumDate, MongoConf.maximumDate)
   
-  var logicalId : String = null
+  var logicalId : String = _
   
-  var _id : ObjectId = null
+  var _id : ObjectId = _
   
   def active : Boolean = {
     tPeriod.to == MongoConf.maximumDate

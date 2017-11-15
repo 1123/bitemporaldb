@@ -1,14 +1,15 @@
 package org.bitemporal
 
 import java.util.Date
-import scala.collection.mutable.HashMap
+
+import scala.collection.mutable
 
 class Collection[T](n : String) {
 
   var maxTechnicalId : Int = 0
   var maxLogicalId : Int = 0
   val name : String = n
-  var table = new HashMap[Int, List[Temporal[T,Int]]]()
+  var table = new mutable.HashMap[Int, List[Temporal[T,Int]]]()
 
   /**
    * Find the version of the temporal object for the given bitemporal context.
@@ -24,7 +25,7 @@ class Collection[T](n : String) {
     if (candidates.size > 1)
       throw new BitemporalStorageException("Invalid database state. Multiple versions for the object for a given " +
         "transaction and valid time.")
-    if (candidates.size == 0)
+    if (candidates.isEmpty)
       return None
     Some(candidates.head)
   }
@@ -38,7 +39,7 @@ class Collection[T](n : String) {
    */
 
   def get(logicalId: Int) : List[Temporal[T, Int]] = {
-    table.get(logicalId).get
+    table(logicalId)
   }
 
   /**
@@ -53,7 +54,7 @@ class Collection[T](n : String) {
    */
   def countTechnical() : Int = {
     val sizes : List[Int] = this.table.values.toList.map(_.size)
-    sizes.foldLeft(0)((a,b) => a + b)
+    sizes.sum
   }
 
   /**
@@ -87,8 +88,8 @@ class Collection[T](n : String) {
    */
 
   def instances(id: Int) : List[Temporal[T, Int]] = {
-    if (this.table.get(id) == None) return List[Temporal[T, Int]]()
-    this.table.get(id).get
+    if (this.table.get(id).isEmpty) return List[Temporal[T, Int]]()
+    this.table(id)
   }
 
   /**

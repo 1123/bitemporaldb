@@ -4,8 +4,10 @@ import org.bitemporal.domain.Student
 import org.scalatest._
 
 /**
- * Store two __different__ objects of the same class in the database.
- * Retrieve the objects by logical id and assert they are equal to the ones stored.
+  * Store two __different__ objects of the same class in the database.
+  * Retrieve the objects by logical id and assert they are equal to the ones stored.
+  *
+  * This test does not cover any temporal or bitemporal functionality.
  */
 
 class BasicStorageTest extends FlatSpec with Matchers {
