@@ -11,7 +11,7 @@
     <dependencies>
         <dependency>
             <groupId>com.github.1123</groupId>
-            <artifactId>bitemporal_2.11</artifactId>
+            <artifactId>bitemporal_2.12</artifactId>
             <version>0.1</version>
         </dependency>
         <dependency>
