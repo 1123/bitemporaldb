@@ -6,22 +6,21 @@ import org.joda.time.DateTime
 
 class BitemporalRetrievalTest extends FlatSpec with Matchers {
 
-  val d1 = new DateTime(2013,6,7,0,0,0).toDate
-  val d2 = new DateTime(2013,6,8,0,0,0).toDate
-  val d3 = new DateTime(2013,6,9,0,0,0).toDate
-  val d4 = new DateTime(2013,6,10,0,0,0).toDate
+  private val d1 = new DateTime(2013,6,7,0,0,0).toDate
+  private val d2 = new DateTime(2013,6,8,0,0,0).toDate
+  private val d3 = new DateTime(2013,6,9,0,0,0).toDate
+  private val d4 = new DateTime(2013,6,10,0,0,0).toDate
 
-  
   behavior of "an InMemoryBitemporalDatabase"
 
   InMemoryBitemporalDatabase.clearDatabase()
   // at d1, store object with validity from d1 to d2
   // at d3, store a different object with validity from d3 to d4
-  val s = new Student("Some", "Body")
-  val t = new Student("Some", "One")
-  val id1 = InMemoryBitemporalDatabase.store(s, d1, new Period(d1, d2))
-  val id2 = InMemoryBitemporalDatabase.store(t, d3, new Period(d3, d4))
-  val template = new Student()
+  private val s = new Student("Some", "Body")
+  private val t = new Student("Some", "One")
+  private val id1 = InMemoryBitemporalDatabase.store(s, d1, new Period(d1, d2))
+  private val id2 = InMemoryBitemporalDatabase.store(t, d3, new Period(d3, d4))
+  private val template = new Student()
 
   it should " return nothing when searching out of the validity of all stored objects " in {
     // s has validity between d1 and d2. It is not valid at d3.

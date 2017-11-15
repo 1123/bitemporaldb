@@ -15,7 +15,7 @@ class NonOverlappingStorageTest extends FlatSpec with Matchers {
   val s = new Student("Some", "Body")
   val t = new Student("Some", "Head")
 
-  val sLogicalId = InMemoryBitemporalDatabase.store(s, new Period(new DateTime(0,1,1,0,0,0).toDate(), TestData.d1))
+  private val sLogicalId = InMemoryBitemporalDatabase.store(s, new Period(new DateTime(0,1,1,0,0,0).toDate(), TestData.d1))
   InMemoryBitemporalDatabase.countLogical(s) should be (1)
   InMemoryBitemporalDatabase.countTechnical(s) should be (1)
 

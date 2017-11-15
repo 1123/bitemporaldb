@@ -6,5 +6,5 @@ class Building(a : String = "") {
     this("No Address given.")
   }
   
-  val address = a
+  val address: String = a
 }

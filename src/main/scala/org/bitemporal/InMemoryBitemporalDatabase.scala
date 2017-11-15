@@ -1,8 +1,9 @@
 package org.bitemporal
 
 import java.util.Date
-import scala.collection.{mutable => m}
+
 import scala.collection.mutable.HashMap
+import scala.collection.mutable
 
 /**
  * This is an in-memory implementation of the bitemporal database interface.
@@ -11,7 +12,7 @@ import scala.collection.mutable.HashMap
 
 object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
 
-  private var tables : HashMap[String, Collection[Object]] = new HashMap[String, Collection[Object]]()
+  private var tables : mutable.HashMap[String, Collection[Object]] = new mutable.HashMap[String, Collection[Object]]()
 
   /**
    * {@inheritDoc}
@@ -97,7 +98,7 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
    */
 
   override def store[T](t : T, when: Date) : Int = {
-    if (collectionFor(t) == None)
+    if (collectionFor(t).isEmpty)
       initCollectionFor(t)
     collectionFor(t).get.store(t, when)
   }
@@ -122,7 +123,7 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
    */
 
   override def store[T](t: T, when: Date, validity : Period) : Int = {
-    if (collectionFor(t) == None)
+    if (collectionFor(t).isEmpty)
       initCollectionFor(t)
     collectionFor(t).get.store(t, when, validity)
   }
@@ -131,6 +132,6 @@ object InMemoryBitemporalDatabase extends BitemporalDatabase[Int] {
     this.tables.put(t.getClass.toString, new Collection[Object](t.getClass.toString))
   }
 
-  override def clearDatabase() { tables = new HashMap[String, Collection[Object]]() }
+  override def clearDatabase() { tables = new mutable.HashMap[String, Collection[Object]]() }
 
 }

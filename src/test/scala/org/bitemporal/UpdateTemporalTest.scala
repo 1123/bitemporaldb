@@ -19,10 +19,10 @@ import org.joda.time.DateTime
 
 class UpdateTemporalTest extends FlatSpec with Matchers {
 
-  val d1 = new DateTime(2013,6,7,0,0,0).toDate // 2013-06-07
-  val d2 = new DateTime(2013,6,8,0,0,0).toDate // 2013-06-08
-  val d3 = new DateTime(2013,6,9,0,0,0).toDate // 2013-06-09
-  val d4 = new DateTime(2013,6,10,0,0,0).toDate // 2013-06-10
+  private val d1 = new DateTime(2013,6,7,0,0,0).toDate // 2013-06-07
+  private val d2 = new DateTime(2013,6,8,0,0,0).toDate // 2013-06-08
+  private val d3 = new DateTime(2013,6,9,0,0,0).toDate // 2013-06-09
+  private val d4 = new DateTime(2013,6,10,0,0,0).toDate // 2013-06-10
 
   behavior of "an InMemoryBitemporalDatabase"
   

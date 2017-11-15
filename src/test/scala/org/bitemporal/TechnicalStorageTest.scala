@@ -1,21 +1,20 @@
 package org.bitemporal
 
 import org.scalatest.{FlatSpec, Matchers}
-import java.util.Date
 import org.bitemporal.domain.Student
 
 class TechnicalStorageTest extends FlatSpec with Matchers {
 
   InMemoryBitemporalDatabase.clearDatabase()
 
-  val s = new Student("Some", "Body")
-  val sValidity = new Period(TestData.d1, TestData.d2)
-  val t = new Student("Some", "Where")
-  val tValidity = new Period(TestData.d1, TestData.d2)
-  new Temporal(s, sValidity).active should be (right = true)
+  private val s = new Student("Some", "Body")
+  private val sValidity = new Period(TestData.d1, TestData.d2)
+  private val t = new Student("Some", "Where")
+  private val tValidity = new Period(TestData.d1, TestData.d2)
+  new Temporal(s, sValidity).active should be (true)
   new Temporal(t, tValidity).active should be (true)
 
-  val sId = InMemoryBitemporalDatabase.store(s, sValidity)
+  private val sId = InMemoryBitemporalDatabase.store(s, sValidity)
   sId should be (0)
   InMemoryBitemporalDatabase.countLogical(s) should be (1)
   InMemoryBitemporalDatabase.countTechnical(s) should be (1)

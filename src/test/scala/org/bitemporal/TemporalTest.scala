@@ -18,9 +18,9 @@ class TemporalTest extends FlatSpec with Matchers {
 
   val expected : Temporal[Student, Int] = new Temporal[Student, Int](new Student("Some", "Body"), new Period(TestData.d1, TestData.d2))
 
-  updated.head.vPeriod == expected.vPeriod should be (right = true)
-  updated.head.element.lastName == "Body" should be (right = true)
-  updated.tail.head.vPeriod == new Period(TestData.d3,TestData.d4) should be (right = true)
-  updated.tail.head.element.lastName == "Body" should be (right = true)
+  updated.head.vPeriod == expected.vPeriod should be (true)
+  updated.head.element.lastName == "Body" should be (true)
+  updated.tail.head.vPeriod == new Period(TestData.d3,TestData.d4) should be (true)
+  updated.tail.head.element.lastName == "Body" should be (true)
 
 }

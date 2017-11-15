@@ -1,31 +1,18 @@
 package org.bitemporal.mongodb
 
-import org.scalatest.FlatSpec
-import org.scalatest.Matchers
-import java.lang.reflect.Type
 import org.bitemporal.Period
-import org.joda.time.DateTime
-import com.mongodb.MongoClient
-import com.mongodb.util.JSON
-import com.mongodb.DBObject
-import org.bson.types.ObjectId
-import com.mongodb.BasicDBObject
-import java.lang.reflect.ParameterizedType
-import org.bitemporal.mongogson.SimpleTemporal
-import java.util.ArrayList
+import org.bitemporal.domain.{Airplane, Building}
 import org.bitemporal.mongogson.BitemporalMongoDb
-import org.scalatest.BeforeAndAfter
-import org.bitemporal.domain.Airplane
-import org.bitemporal.domain.Building
+import org.joda.time.DateTime
+import org.scalatest.{BeforeAndAfter, FlatSpec, Matchers}
 
 class StorageTest extends FlatSpec with Matchers with BeforeAndAfter {
 
-  var buildingId : String = null
-  var airplaneId : String = null
-  val from = new DateTime(2014,1,1,0,0,0).toDate()
-  val to = new DateTime(2015,1,1,0,0,0).toDate()
-  val vPeriod1 = new Period(from, to)
-  val vPeriod2 = new Period(new DateTime(2015,1,1,0,0,0).toDate(), new DateTime(2015,1,1,0,0,0).toDate())
+  private var buildingId : String = _
+  private var airplaneId : String = _
+  private val from = new DateTime(2014, 1, 1, 0, 0, 0).toDate
+  private val to = new DateTime(2015, 1, 1, 0, 0, 0).toDate
+  private val vPeriod1 = new Period(from, to)
 
   val myDb = new BitemporalMongoDb()
   

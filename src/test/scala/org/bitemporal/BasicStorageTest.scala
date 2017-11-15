@@ -14,8 +14,8 @@ class BasicStorageTest extends FlatSpec with Matchers {
 
     InMemoryBitemporalDatabase.clearDatabase()
 
-    var id1 : Int = 0;
-    var id2 : Int = 0;
+    var id1 : Int = 0
+    var id2 : Int = 0
     var s = new Student("Some", "Body")
     var t = new Student("Some", "Where")
     
