@@ -49,7 +49,7 @@ class UpdateTemporalTest extends FlatSpec with Matchers {
     retrieved2.element should equal (retrieved1.element)
 
     // search with the new transaction time. Thus we expect to find the correct/updated name.
-    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), d1)).get;
+    val retrieved3 : Temporal[Student, Int] = InMemoryBitemporalDatabase.findLogical(new Student(), sId, new BitemporalContext(new Date(), d1)).get
     retrieved3.element.firstName should be ("John")
   }
 }

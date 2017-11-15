@@ -6,14 +6,14 @@ organization := "com.github.1123"
 
 version := "0.1"
 
-scalaVersion := "2.11.2"
+scalaVersion := "2.12.4"
 
 EclipseKeys.withSource := true
 
 //Define dependencies. These ones are only required for Test and Integration Test scopes.
 libraryDependencies ++= Seq(
-    "org.scalatest"   %% "scalatest"  % "2.1.6"   % "test,it",
-    "org.scalacheck"  %% "scalacheck"   % "1.11.4" % "test,it",
+    "org.scalatest"   %% "scalatest"  % "3.0.4"   % "test,it",
+    "org.scalacheck"  %% "scalacheck"   % "1.13.5" % "test,it",
     "joda-time" % "joda-time" % "2.0",
     "org.joda" % "joda-convert" % "1.2",
     "junit" % "junit" % "4.8.1" % "test"
