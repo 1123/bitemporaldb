@@ -5,7 +5,11 @@ Bitemporal
 
 This is a bitemporal, object oriented bitemporal database layer on top of 
 Mongodb written in Scala. Also an in-memory bitemporal database based on Java 
-hashmaps is included that can be used without a database. 
+hashmaps is included that can be used without a database. Essentially this library
+allows to store objects together with transactional history and their temporal validity 
+and query these objects using a bitemporal context. 
+Note that this library does not allow to manage transactional history and
+temporal validity of single object properties or relations to other objects.
 
 MongoDB has been chosen as the first
 persistent implementation, since it allows for document oriented storage and
